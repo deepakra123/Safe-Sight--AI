@@ -1,0 +1,7 @@
+.env
+venv/
+__pycache__/
+data/*
+!data/.gitkeep
+# Allow best.pt to be tracked so the model runs out-of-the-box
+!models/best.pt

@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Safety Q&amp;A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+<style>
+:root {
+  --ink: #1c2226;
+  --bg: #eceeea;
+  --line: #c4c9c2;
+  --hv: #f2c200;
+  --red: #c4352b;
+  --grn: #2e7d4f;
+  --unc: #8a96a0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 Poppins, "Segoe UI", sans-serif;
+}
+h1, h2, h3, .badge {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+header {
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 24px;
+  border-bottom: 6px solid var(--hv);
+}
+h1 { margin: 0; font-size: 1.7rem; }
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px;
+  max-width: 1300px;
+  margin: auto;
+}
+@media (max-width: 860px) {
+  main { grid-template-columns: 1fr; }
+}
+h2 { font-size: 1.25rem; margin: 0 0 10px; }
+h3 { font-size: 1.05rem; margin: 12px 0 6px; }
+section { min-width: 0; }
+button, input[type=text] {
+  font: inherit;
+  padding: 8px 14px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+}
+button {
+  background: var(--hv);
+  cursor: pointer;
+  font-weight: 600;
+}
+button:disabled, input:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  background: #ddd;
+}
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.load {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0;
+}
+.spin {
+  width: 22px;
+  height: 22px;
+  border: 4px solid var(--line);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: sp 1s linear infinite;
+  flex: none;
+}
+@keyframes sp { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+.prog {
+  height: 6px;
+  background: #d9ddd6;
+  margin-top: 4px;
+  width: 220px;
+}
+.prog i {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transition: width .4s;
+}
+.err { color: var(--red); font-weight: 500; }
+.ok { color: var(--grn); font-weight: 500; }
+
+.bar {
+  position: relative;
+  height: 20px;
+  background: #d9ddd6;
+  margin: 4px 0 12px;
+  cursor: pointer;
+  border: 1px solid var(--line);
+}
+.bar:hover { border-color: var(--ink); }
+.bar i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+.violation { background: var(--red); }
+.uncertain { background: var(--unc); }
+
+.preview-box {
+  background: #fff;
+  border: 2px solid var(--ink);
+  padding: 10px;
+  margin-top: 14px;
+}
+.preview-box h3 { margin: 0 0 8px; }
+.ev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+figure.ev-card {
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 4px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+figure.ev-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  border-color: var(--ink);
+}
+figure.ev-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #eee;
+}
+figure.ev-card.full img {
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+}
+figcaption {
+  font-size: .78rem;
+  color: #333;
+  margin-top: 4px;
+  word-break: break-word;
+}
+
+#chat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 12px;
+  max-height: 72vh;
+  overflow: auto;
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--ink);
+  padding: 12px;
+}
+.card .q { color: #555; margin: 0 0 6px; font-weight: 500; }
+.badge {
+  display: inline-block;
+  padding: 1px 12px;
+  color: #fff;
+  background: var(--unc);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+}
+.badge.yes { background: var(--red); }
+.badge.no { background: var(--grn); }
+.chip {
+  margin: 4px 6px 4px 0;
+  padding: 3px 10px;
+  font-size: .8rem;
+  background: #fff;
+  border: 1px solid var(--ink);
+}
+.chip:hover { background: var(--hv); }
+.ev {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+#ask { display: flex; gap: 8px; }
+#ask input { flex: 1; min-width: 0; }
+small { display: block; margin-top: 6px; color: #555; }
+
+/* Modal viewer */
+#modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+#modal.active { display: flex; }
+#modal-content {
+  background: #fff;
+  border: 3px solid var(--ink);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 14px;
+  position: relative;
+}
+#modal-content img {
+  max-width: 100%;
+  max-height: 75vh;
+  display: block;
+}
+#modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>SITE SAFETY Q&amp;A</h1>
+</header>
+<main>
+  <section>
+    <h2>Footage</h2>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="f" accept="video/*,image/*">
+      <button id="upb" onclick="up()">Upload</button>
+    </div>
+    <div id="state"></div>
+    <div id="tl"></div>
+  </section>
+
+  <section>
+    <h2>Ask about the footage</h2>
+    <div id="chat"></div>
+    <div id="ask">
+      <input type="text" id="q" disabled placeholder="Chat unlocks when processing finishes" onkeydown="if(event.key==='Enter')ask()">
+      <button id="go" disabled onclick="ask()">Ask</button>
+    </div>
+  </section>
+</main>
+
+<div id="modal" onclick="if(event.target===this)closeModal()">
+  <div id="modal-content">
+    <button id="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modal-img" src="" alt="Enlarged frame">
+    <p id="modal-caption" style="margin:8px 0 0;font-weight:600"></p>
+  </div>
+</div>
+
+<script>
+let mid = null, timer = null, busy = false, mediaDur = 0;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const loader = (t, p) => `<div class="load"><div class="spin"></div><div>${esc(t)}<div class="prog"><i style="width:${Math.round(100 * (p || 0))}%"></i></div></div></div>`;
+
+function lock(on) {
+  $('q').disabled = $('go').disabled = on;
+  $('q').placeholder = on ? 'Chat unlocks when processing finishes' : 'e.g. Is anyone without a hardhat or vest? Are they wearing gloves?';
+}
+
+function viewModal(url, caption) {
+  $('modal-img').src = url;
+  $('modal-caption').innerText = caption;
+  $('modal').classList.add('active');
+}
+
+function closeModal() {
+  $('modal').classList.remove('active');
+}
+
+async function up() {
+  const f = $('f').files[0];
+  if (!f) return;
+  clearTimeout(timer);
+  lock(true);
+  $('upb').disabled = true;
+  $('tl').innerHTML = '';
+  $('chat').innerHTML = '';
+  $('state').innerHTML = loader('Uploading…', 0);
+  try {
+    const fd = new FormData();
+    fd.append('file', f);
+    const r = await fetch('/upload', { method: 'POST', body: fd });
+    if (!r.ok) throw new Error((await r.json()).detail || 'Upload failed');
+    const d = await r.json();
+    mid = d.media_id;
+    poll();
+  } catch (e) {
+    $('state').innerHTML = `<p class="err">${esc(e.message)}</p>`;
+  }
+  $('upb').disabled = false;
+}
+
+async function poll() {
+  try {
+    const s = await (await fetch('/status/' + mid)).json();
+    if (s.status === 'ready') {
+      $('state').innerHTML = '<p class="ok">Processing finished. You can ask questions below.</p>';
+      lock(false);
+      return tl();
+    }
+    if (s.status === 'error') {
+      $('state').innerHTML = `<p class="err">Processing failed: ${esc(s.message.replace(/^error:\s*/, ''))}</p>`;
+      return;
+    }
+    $('state').innerHTML = loader(s.status === 'processing' ? 'Processing detections & video timeline…' : 'Waiting…', s.progress);
+  } catch (e) {}
+  timer = setTimeout(poll, 1000);
+}
+
+async function tl() {
+  try {
+    const t = await (await fetch('/timeline/' + mid)).json();
+    mediaDur = t.duration || 1.0;
+
+    if (t.is_image) {
+      const ev = (t.evidence && t.evidence[0]) ? t.evidence[0] : null;
+      let html = `<div class="preview-box"><h3>Annotated Detection Frame</h3>`;
+      if (ev) {
+        html += `<figure class="ev-card full" onclick="viewModal('${ev.url}', '${esc(ev.caption)}')">
+                   <img src="${ev.url}" alt="${esc(ev.caption)}">
+                   <figcaption>${esc(ev.caption)} (click to enlarge)</figcaption>
+                 </figure>`;
+      }
+      html += `</div>`;
+      $('tl').innerHTML = html;
+      return;
+    }
+
+    // Video timeline rendering
+    let html = `<h2>Timeline</h2>
+      <small>red: violation (item missing), grey: unclear. Click any bar to inspect that exact second.</small>`;
+
+    html += Object.entries(t.items).map(([k, ev]) => {
+      return `<div style="margin: 8px 0;">
+        <b>${esc(k)}</b>
+        <div class="bar" onclick="seekFrame(event, '${esc(k)}')">
+          ${ev.map(e => `<i class="${e.state}" title="${esc(k)} ${e.state} ${e.start_s.toFixed(1)}–${e.end_s.toFixed(1)}s"
+            style="left:${(100 * e.start_s / t.duration).toFixed(2)}%;width:${Math.max(0.8, 100 * (e.end_s - e.start_s) / t.duration).toFixed(2)}%"></i>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+
+    // Evidence Violation Frames section
+    if (t.evidence && t.evidence.length > 0) {
+      html += `<div class="preview-box">
+        <h3>Annotated Violation Frames</h3>
+        <small style="margin-bottom:8px">Detected violation intervals (start, mid, end frames). Click any image to view in full size.</small>
+        <div class="ev-grid">
+          ${t.evidence.map(e => `
+            <figure class="ev-card" onclick="viewModal('${e.url}', '${esc(e.caption)}')">
+              <img src="${e.url}" alt="${esc(e.caption)}" loading="lazy">
+              <figcaption>${esc(e.caption)}</figcaption>
+            </figure>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    $('tl').innerHTML = html;
+  } catch (e) {
+    console.error('Failed to load timeline:', e);
+  }
+}
+
+async function seekFrame(evt, item) {
+  const rect = evt.currentTarget.getBoundingClientRect();
+  const clickX = evt.clientX - rect.left;
+  const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+  const t = (ratio * mediaDur).toFixed(2);
+  try {
+    const r = await fetch(`/frame/${mid}?t=${t}&item=${encodeURIComponent(item)}`);
+    if (!r.ok) return;
+    const f = await r.json();
+    viewModal(f.url, f.caption);
+  } catch (e) {}
+}
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('.chip');
+  if (!b) return;
+  b.disabled = true;
+  try {
+    const r = await fetch(`/frame/${mid}?t=${b.dataset.t}&item=${encodeURIComponent(b.dataset.i)}`);
+    if (!r.ok) throw 0;
+    const f = await r.json();
+    const cardEv = b.closest('.card').querySelector('.ev');
+    if (cardEv) {
+      cardEv.insertAdjacentHTML('afterbegin', `
+        <figure class="ev-card" onclick="viewModal('${f.url}', '${esc(f.caption)}')">
+          <img src="${f.url}" alt="${esc(f.caption)}">
+          <figcaption>${esc(f.caption)}</figcaption>
+        </figure>
+      `);
+    }
+  } catch (x) {}
+  b.disabled = false;
+});
+
+async function ask() {
+  const q = $('q').value.trim();
+  if (!q || !mid || busy) return;
+  busy = true;
+  $('q').value = '';
+  lock(true);
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.innerHTML = `<p class="q">${esc(q)}</p>` + loader('Analysing footage… open-vocab items use CLIP prototypes', 0);
+  $('chat').append(c);
+  $('chat').scrollTop = $('chat').scrollHeight;
+
+  try {
+    const r = await fetch('/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ media_id: mid, question: q })
+    });
+    if (!r.ok) throw new Error(r.status === 409 ? 'The footage is still processing. Please wait.' : 'Analysis request failed.');
+    const a = await r.json();
+    c.innerHTML = `
+      <p class="q">${esc(q)}</p>
+      <span class="badge ${esc(a.verdict)}">${esc(String(a.verdict).replace('_', ' '))}</span>
+      <p>${esc(a.answer)}</p>
+      ${(a.citations || []).map(x => `<button class="chip" data-i="${esc(a.item)}" data-t="${x.start_s}">${x.start_s.toFixed(1)}–${x.end_s.toFixed(1)} s ${esc(x.state)}: show frame</button>`).join('')}
+      <div class="ev">
+        ${(a.evidence || []).map(e => `
+          <figure class="ev-card" onclick="viewModal('${e.url}', '${esc(e.caption)}')">
+            <img src="${e.url}" alt="${esc(e.caption)}">
+            <figcaption>${esc(e.caption)}</figcaption>
+          </figure>
+        `).join('')}
+      </div>
+      ${(a.sources && a.sources.length ? `<small>Reference: ` + a.sources.slice(0, 6).map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.user)}</a>`).join(', ') + `</small>` : '')}
+    `;
+  } catch (e) {
+    c.innerHTML = `<p class="q">${esc(q)}</p><p class="err">${esc(e.message)}</p>`;
+  }
+  busy = false;
+  lock(false);
+  $('chat').scrollTop = $('chat').scrollHeight;
+}
+</script>
+</body>
+</html>

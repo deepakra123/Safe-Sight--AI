@@ -1,0 +1,12 @@
+ultralytics==8.4.191
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+langgraph
+langchain-groq
+pydantic
+transformers
+requests
+pillow
+pi-heif
